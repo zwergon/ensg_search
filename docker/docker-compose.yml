@@ -1,0 +1,85 @@
+version: '3'
+services:
+
+  os01:
+    image: opensearchproject/opensearch:2
+    container_name: os01
+    environment:
+      - node.name=os01 # Name the node that will run in this container
+      - cluster.name=es-docker-cluster # Name the cluster
+      - discovery.seed_hosts=os01,os02 # Nodes to look for when discovering the cluster
+      - cluster.initial_cluster_manager_nodes=os01,os02 # Nodes eligible to serve as cluster manager
+      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD} # Sets the demo admin user password when using demo configuration, required for OpenSearch 2.12 and later
+
+    ulimits:
+      memlock:
+        # Set memlock to unlimited (no soft or hard limit)
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+        hard: 65536
+    ports:
+      - 9200:9200 # REST API
+      - 9600:9600 # Performance Analyzer
+    volumes:
+      - os-data1:/usr/share/opensearch/data
+      #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - opensearch-net
+
+  os02:
+    image: opensearchproject/opensearch:2
+    container_name: os02
+    environment:
+      - node.name=os02 # Name the node that will run in this container
+      - cluster.name=es-docker-cluster # Name the cluster
+      - discovery.seed_hosts=os01,os02 # Nodes to look for when discovering the cluster
+      - cluster.initial_cluster_manager_nodes=os01,os02 # Nodes eligible to serve as cluster manager
+      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD} # Sets the demo admin user password when using demo configuration, required for OpenSearch 2.12 and later
+
+    ulimits:
+      memlock:
+        # Set memlock to unlimited (no soft or hard limit)
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+        hard: 65536
+
+    volumes:
+      - os-data2:/usr/share/opensearch/data
+      #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - opensearch-net
+
+  os-dashboard:
+    image: opensearchproject/opensearch-dashboards:2
+    container_name: os-dashboard
+    ports:
+      - "9201:5601" # Map host port 5601 to container port 5601
+    expose:
+      - 5601
+    environment:
+      OPENSEARCH_HOSTS: '["https://os01:9200","https://os02:9200"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
+
+    #volumes: #- ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    networks:
+      - opensearch-net
+    depends_on:
+      - os01
+      - os02
+
+networks:
+  opensearch-net:
+
+
+volumes:
+  os-data1:
+    external: true
+  os-data2:
+    external: true
