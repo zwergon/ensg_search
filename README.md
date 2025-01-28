@@ -1,5 +1,14 @@
 # ENSG Opensearch lessons
 
+## Installation Opensearch à partir du Docker Compose
+
+1. Installation de docker avec snap sur ubuntu
+1. S'ajouter au [group docker](https://docs.docker.com/engine/install/linux-postinstall/)
+1. Modification des [Linux Settings](https://opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/) 
+1. Définition d'un mot de passe et création du fichier `.env`
+1. Création des volumes dockers `docker volume create`
+1. On lance le script `docker compose up -d`
+
 
 
 # curl equivalent on Windows
