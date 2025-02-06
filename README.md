@@ -44,8 +44,6 @@ PUT /geo_data
 }
 ```
 
-
-
 # CRUD operation
 
 insert a document from a json file with document id 
@@ -57,6 +55,85 @@ insert a document from a json file with document id
 
  ```
  curl -X POST "https://localhost:9200/power_plant/_doc/" -H "Content-Type: application/json" -d @power_plant_0.json -ku admin:$OPENSEARCH_INITIAL_ADMIN_PASSWORD
+ ```
+
+ # Request
+
+
+ ```
+ PUT /power_plant 
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 2
+  },
+  "mappings": {
+    "properties": {
+      "coordinates": { "type": "geo_point" }
+    }
+  }
+}
+ ```
+
+ ```
+GET /power_plant/_search?size=2
+ ```
+ L'API _analyze permet de voir comment un champ est transformé en tokens lors de l'indexation.
+ ```
+GET /power_plant/_analyze
+{
+  "field": "municipality.keyword",
+  "text": "Arbois"
+}
+
+
+L'API _termvectors permet de voir les termes réellement stockés dans l'index inversé pour un document donné.
+ ```
+GET /power_plant/_termvectors/2
+{
+  "fields": ["municipality"],
+  "offsets": true,
+  "positions": true,
+  "term_statistics": true
+}
+ ```
+
+
+ ```
+
+ ```
+ GET power_plant/_search
+{
+  "size": 2, 
+  "query": {
+    "bool": {
+      "must_not": {
+        "match": { "municipality": "Arbois" }  // Exclut Arbois
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "100km",  // Ajuste cette valeur si nécessaire
+          "coordinates": {
+            "lat": 46.8944494212,
+            "lon": 5.77331567443
+          }
+        }
+      }
+    }
+  },
+  "sort": [
+    {
+      "_geo_distance": {
+        "coordinates": {
+          "lat": 46.8944494212,
+          "lon": 5.77331567443
+        },
+        "order": "asc",
+        "unit": "km"
+      }
+    }
+  ]
+}
  ```
 
 

@@ -30,4 +30,22 @@ Nearest plan to "Saint-Flour" is "Trézioux"
 
 ## export json
 
-Export several rows of the dataframe as dict in json format.
+1. <a id='json_one'></a>Export several rows of the dataframe as dict in json format. 
+
+1. Export the $N$ first rows of the dataframe in a file in bulk json format 
+
+# Crud Manipulation
+
+1. Create an index called power_plant
+
+1. Index documents using [file](#json_one) 
+
+1. Read the document to check the content of the document
+
+1. Update a fied in this document
+
+1. Reread the document to ensure that the field has been updated.
+
+1. Delete the document
+
+1. Delete the index
