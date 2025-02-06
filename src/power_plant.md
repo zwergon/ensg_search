@@ -49,3 +49,17 @@ Nearest plan to "Saint-Flour" is "Trézioux"
 1. Delete the document
 
 1. Delete the index
+
+# Mapping definition
+
+1. Create an index called power_plant
+
+1. look at the current mapping of your index
+
+1. index document
+
+1. look at the mapping.
+
+1. delete the index
+
+1. Create the right mapping for coordinates
