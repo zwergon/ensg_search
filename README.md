@@ -44,3 +44,19 @@ PUT /geo_data
 }
 ```
 
+
+
+# CRUD operation
+
+insert a document from a json file with document id 
+```
+ curl -X PUT "https://localhost:9200/power_plant/_doc/1" -H "Content-Type: application/json" -d @power_plant_0.json -ku admin:$OPENSEARCH_INITIAL_ADMIN_PASSWORD
+ ```
+
+ without document_id
+
+ ```
+ curl -X POST "https://localhost:9200/power_plant/_doc/" -H "Content-Type: application/json" -d @power_plant_0.json -ku admin:$OPENSEARCH_INITIAL_ADMIN_PASSWORD
+ ```
+
+
