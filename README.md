@@ -1,6 +1,7 @@
 # ENSG Opensearch lessons
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 This is main branch for session 1
 =======
@@ -203,3 +204,6 @@ GET /pluvio/_search
 }
 ```
 >>>>>>> origin/end
+=======
+This is the branche for session 2
+>>>>>>> session2
