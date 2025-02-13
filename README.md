@@ -1,10 +1,7 @@
 # ENSG Opensearch lessons
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 This is main branch for session 1
-=======
 ## Installation Opensearch à partir du Docker Compose
 
 1. Installation de docker avec snap sur ubuntu
@@ -203,7 +200,3 @@ GET /pluvio/_search
   }
 }
 ```
->>>>>>> origin/end
-=======
-This is the branche for session 2
->>>>>>> session2
