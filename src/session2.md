@@ -1,6 +1,8 @@
 # Manipulate Open Data : Renewable Power Plant
 
- [Download](https://data.open-power-system-data.org/renewable_power_plants/2020-08-25) csv data. 
+![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)
+
+First [download](https://data.open-power-system-data.org/renewable_power_plants/2020-08-25) csv data. 
 
 # Data discovery
 
