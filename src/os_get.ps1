@@ -2,27 +2,38 @@ param (
     [string]$Uri
 )
 
-$Password = "9nys3us285"
-$Username = "kpwoipavhb" 
 
+# Vérification des paramètres
 if (-not $Uri) {
     Write-Host "Usage: .\os_get.ps1 -Uri <URL>"
     exit 1
 }
 
+$Uri = "https://127.0.0.1:9200/_cat/indices"
+# Récupération des credentials
+$Username = "admin"
+$Password = $env:OSPASSWD
+
+if (-not $Password) {
+    Write-Host "Erreur: la variable d'environnement OSPASSWD n'est pas définie." -ForegroundColor Red
+    exit 1
+}
+
+# Construction de l'en-tête d'authentification
+$authValue = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("$Username`:$Password"))
+$headers = @{
+    Authorization = "Basic $authValue"
+}
+
 try {
-    # Create the credential object
-    $SecurePassword = ConvertTo-SecureString $Password -AsPlainText -Force
-    $Credential = New-Object PSCredential($Username, $SecurePassword)
+    # Exécution de la requête GET avec Basic Auth
+    $Response = Invoke-WebRequest -Uri $Uri -Method Get -Headers $headers
 
-    # Perform the request
-    $Response = Invoke-WebRequest -Uri $Uri -Method Get -Credential $Credential -Verbose
-
-    # Display the response content
+    # Affichage de la réponse
     Write-Host "`nResponse Content:"
     Write-Host $Response.Content
 }
 catch {
-    Write-Host "An error occurred:" -ForegroundColor Red
+    Write-Host "Une erreur s'est produite:" -ForegroundColor Red
     Write-Host $_.Exception.Message
 }

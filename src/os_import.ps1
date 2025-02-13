@@ -1,12 +1,15 @@
 param (
     [string]$FilePath
 )
-$Uri = "https://ensg-search-9642476797.eu-central-1.bonsaisearch.net:443/_bulk"
-$Password = "9nys3us285"
-$Username = "kpwoipavhb" 
+
+# $Uri = "https://ensg-search-9642476797.eu-central-1.bonsaisearch.net:443/_bulk"
+# $Password = "9nys3us285"
+# $Username = "kpwoipavhb" 
+
+$Uri = "https://127.0.0.1:9200/_bulk"
+$Username = "admin"
+$Password = $env:OSPASSWD
 $contentType = "application/json"
-
-
 
 if (-not $FilePath) {
     Write-Host "Usage: .\os_import.ps1 -FilePath <filepath>"
@@ -14,24 +17,38 @@ if (-not $FilePath) {
 }
 
 # Charger le fichier bulk
-$bulkData = Get-Content -Path $filePath -Raw
-$headers = @{
-    Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("kpwoipavhb:9nys3us285"))
-}
-
-
 try {
-    # Create the credential object
-    $SecurePassword = ConvertTo-SecureString $Password -AsPlainText -Force
-    $Credential = New-Object PSCredential($Username, $SecurePassword)
-
-    # Perform the request
-    $Response = Invoke-WebRequest -Uri $Uri -Method Post -Credential $Credential -Body $bulkData -ContentType $contentType -Headers $headers
-
-    # Display the response content
-    Write-Host $Response
+    $bulkData = Get-Content -Path $FilePath -Raw
 }
 catch {
-    Write-Host "An error occurred:" -ForegroundColor Red
+    Write-Host "Erreur lors de la lecture du fichier : $FilePath" -ForegroundColor Red
+    Write-Host $_.Exception.Message
+    exit 1
+}
+
+# Construire l'en-tête d'authentification
+$authValue = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("$Username`:$Password"))
+$headers = @{
+    Authorization  = "Basic $authValue"
+    "Content-Type" = $contentType
+}
+
+try {
+    # Envoi de la requête
+    $Response = Invoke-WebRequest -Uri $Uri -Method Post -Body $bulkData -Headers $headers
+
+    # Vérification du statut HTTP
+    if ($Response.StatusCode -ge 200 -and $Response.StatusCode -lt 300) {
+        Write-Host "Importation réussie !" -ForegroundColor Green
+        Write-Host "Réponse : $($Response.Content)"
+    }
+    else {
+        Write-Host "Erreur lors de l'importation. Code HTTP : $($Response.StatusCode)" -ForegroundColor Yellow
+        Write-Host "Réponse : $($Response.Content)"
+    }
+}
+catch {
+    Write-Host "Une erreur est survenue lors de l'importation." -ForegroundColor Red
     Write-Host $_.Exception.Message
 }
+
