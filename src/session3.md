@@ -45,6 +45,10 @@ ORDER BY p.time;
 
 1. Create a Dashboard like this
 [Dashboard](./dashboard.jpg)
+
+
+---
+[[Copyright](../copyright.txt)] Lecomte Jean-François
  
 
 

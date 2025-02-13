@@ -1,3 +1,8 @@
+# Copyright © 2025 IFP Energies nouvelles (IFPEN), Rueil-Malmaison, France.
+# This course material was created by IFP Energies nouvelles (IFPEN) and 
+# is intended for educational purposes. Unauthorized reproduction, distribution, 
+# or modification without explicit permission is prohibited.
+
 param (
     [string]$Uri
 )
@@ -9,9 +14,8 @@ if (-not $Uri) {
     exit 1
 }
 
-$Uri = "https://127.0.0.1:9200/_cat/indices"
 # Récupération des credentials
-$Username = "admin"
+$Username = "kpwoipavhb" 
 $Password = $env:OSPASSWD
 
 if (-not $Password) {

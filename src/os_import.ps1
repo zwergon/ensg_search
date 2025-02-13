@@ -1,13 +1,14 @@
+# Copyright © 2025 IFP Energies nouvelles (IFPEN), Rueil-Malmaison, France.
+# This course material was created by IFP Energies nouvelles (IFPEN) and 
+# is intended for educational purposes. Unauthorized reproduction, distribution, 
+# or modification without explicit permission is prohibited.
+
 param (
     [string]$FilePath
 )
 
-# $Uri = "https://ensg-search-9642476797.eu-central-1.bonsaisearch.net:443/_bulk"
-# $Password = "9nys3us285"
-# $Username = "kpwoipavhb" 
-
-$Uri = "https://127.0.0.1:9200/_bulk"
-$Username = "admin"
+$Uri = "https://ensg-search-9642476797.eu-central-1.bonsaisearch.net:443/_bulk"
+$Username = "kpwoipavhb" 
 $Password = $env:OSPASSWD
 $contentType = "application/json"
 

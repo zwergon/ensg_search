@@ -70,3 +70,7 @@ Nearest plan to "Saint-Flour" is "Trézioux"
 1. Index all power plants using the `json` you previously exported.
 1. Try to build a request that allows to do the same as previously (find the nearest powerplant from another one)
 1. Build a dashboard that localize on a map all power plants.
+
+
+---
+[[Copyright](../copyright.txt)] Lecomte Jean-François

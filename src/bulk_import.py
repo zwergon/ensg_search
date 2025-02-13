@@ -1,3 +1,9 @@
+"""
+    Copyright © 2025 IFP Energies nouvelles (IFPEN), Rueil-Malmaison, France.
+    This course material was created by IFP Energies nouvelles (IFPEN) and 
+    is intended for educational purposes. Unauthorized reproduction, distribution, 
+    or modification without explicit permission is prohibited.
+"""
 import json
 import requests
 from requests.auth import HTTPBasicAuth

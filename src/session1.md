@@ -1,5 +1,6 @@
-
 # Installing OpenSearch 
+![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)
+
 
 ## with Docker Compose
 
@@ -45,3 +46,6 @@ insert a document from a json file with document id
  ```
  curl -X POST "https://localhost:9200/power_plant/_doc/" -H "Content-Type: application/json" -d @power_plant_0.json -ku admin:$OPENSEARCH_INITIAL_ADMIN_PASSWORD
  ```
+
+---
+[[Copyright](../copyright.txt)] Lecomte Jean-François
