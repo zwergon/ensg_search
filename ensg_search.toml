@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "ensg_search"
+authors = [
+    { name = "Lecomte Jean-François", email = "jean-francois.lecomte@ifpen.fr" },
+]
+
+license = { file = "LICENSE" }
+
+description = "A crash course on how to use opensearch"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools]
+package-dir = { "" = "src" }

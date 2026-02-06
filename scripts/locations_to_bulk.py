@@ -11,7 +11,7 @@ from datetime import datetime
 if __name__ == "__main__":
     directory = os.path.join(os.path.dirname(__file__), "..", "data")
     in_file = os.path.join(directory, "campStationLocations.geojson")
-    out_file = os.path.join(directory, "bulk_data.json")
+    out_file = os.path.join(directory, "capm_locations.json")
 
     # Charger le fichier GeoJSON
     with open(in_file, "r") as file:

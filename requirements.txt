@@ -1,3 +1,5 @@
 numpy
 pandas
 matplotlib
+dotenv
+openserach-py
