@@ -94,23 +94,24 @@ def read_nested_zips_to_df(zip_path: str, n_inner_zips: int | None = None, colum
 pluv_index = "pluvio"
 
 
-def to_bulk(df: pd.DataFrame, out_file):
-
-    if "pluv" in out_file.lower():
-        index_name = 'pluv'
-    else:
-        index_name = "temp"
+def to_bulk(df: pd.DataFrame, out_file, index_name="camp_stations"):
 
     with open(out_file, "w") as bulk_file:
 
         for _, row in df.iterrows():
 
             bulk_file.write(json.dumps(
-                {"index": {"_index": index_name}}) + "\n")
+                {
+                    "create": {
+                        "_index": index_name,
+                        "routing": str(row['StationName'])
+                    }
+                }) + "\n")
 
             if index_name == "temp":
                 document = {
-                    "stno": int(row['StationName']),
+                    "stno": str(row['StationName']),
+                    "station_to_observation": {"name": "observation", "parent": str(row['StationName'])},
                     "date": row['date'].strftime('%Y-%m-%d'),
                     "dry_mean": float(row['dry_mean']),
                     "grass_mean": float(row['grass_mean']),
@@ -118,7 +119,8 @@ def to_bulk(df: pd.DataFrame, out_file):
                 }
             else:
                 document = {
-                    "stno": int(row['StationName']),
+                    "stno": str(row['StationName']),
+                    "station_to_observation": {"name": "observation", "parent": str(row['StationName'])},
                     "date": row['date'].strftime('%Y-%m-%d'),
                     "pluvio_mean": float(row['pluvio_mean']),
                     "temp_mean": float(row['temp_mean'])
@@ -181,26 +183,24 @@ def daily_station_means_suit(df: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
 
-    # root_path = os.path.join(os.path.dirname(__file__),
-    #                          "../data/pluvA/pluvA2025020613/")
-    # out_file = os.path.join(os.path.dirname(
-    #     __file__), "../data/pluv_bulk.json")
-    # to_bulk(root_path=root_path, out_file=out_file, n_files=100)
-
+    from pathlib import Path
+    data_path = Path(__file__).parent.parent / "data"
+    zip_path = data_path / "pluvA.zip"
     # zip_path = "../data/pluvA.zip"
-    # #
+    #
 
-    # df_all = read_nested_zips_to_df(
-    #     zip_path, columns=pluv_columns, n_inner_zips=5)
-
-    # df_daily = daily_station_means_pluv(df_all)
-
-    # to_bulk(df_daily, out_file="../data/pluv_bulk.json")
-
-    zip_path = "../data/suitA.zip"
     df_all = read_nested_zips_to_df(
-        zip_path, columns=suit_columns, n_inner_zips=5)
+        zip_path, columns=pluv_columns, n_inner_zips=5)
 
-    df_daily = daily_station_means_suit(df_all)
+    df_daily = daily_station_means_pluv(df_all)
 
-    to_bulk(df_daily, out_file="../data/temp_bulk.json")
+    out_file = data_path / "pluv_bulk.json"
+    to_bulk(df_daily, out_file=str(out_file))
+
+    # zip_path = "../data/suitA.zip"
+    # df_all = read_nested_zips_to_df(
+    #     zip_path, columns=suit_columns, n_inner_zips=5)
+
+    # df_daily = daily_station_means_suit(df_all)
+
+    # to_bulk(df_daily, out_file="../data/temp_bulk.json")

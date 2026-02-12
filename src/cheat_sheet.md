@@ -2,13 +2,6 @@
 
 ![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)
 
-# curl equivalent on Windows
-
-```
-src\os_get.ps1 -Uri "https://ensg-search-9642476797.eu-central-1.bonsaisearch.net:443/_cat/nodes?v" -Username "kpwoipavhb" -Password "9nys3us285"
-
-```
-
 
 # Creation de l'index avec quelques settings
 
@@ -28,7 +21,7 @@ src\os_get.ps1 -Uri "https://ensg-search-9642476797.eu-central-1.bonsaisearch.ne
  ```
 
 ```
-PUT /geo_data
+PUT /camp_locations
 {
   "settings": {
     "number_of_shards": 1,

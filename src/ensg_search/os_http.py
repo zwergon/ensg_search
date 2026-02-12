@@ -77,6 +77,11 @@ def compter(index: str):
     return response.get("count", 0)
 
 
+def mapping(index: str, body: dict):
+    cmd = f"{index}"
+    return http_request(CmdType.PUT, cmd=cmd, body={"mappings": body})
+
+
 def search_all(index: str, size: int = 10):
     cmd = f"{index}/_search"
     body = {
@@ -91,23 +96,3 @@ def search_all(index: str, size: int = 10):
 def delete(index: str):
     cmd = f"{index}"
     return http_request(CmdType.DELETE, cmd=cmd)
-
-
-if __name__ == "__main__":
-    from pathlib import Path
-    from dotenv import load_dotenv
-    load_dotenv()
-
-    root_path = Path(__file__).parent.parent.parent
-
-    # bulk(root_path / "data/pluv_bulk.json")
-
-    # response = search_all(index="pluvio", size=5)
-    # print(json.dumps(response, indent=2))
-
-    print(f"nombre d'éléments dans l'index pluvio : {compter(index='pluv')}")
-
-    # print("Suppression de l'index pluvio...")
-    # delete(index="pluvio")
-
-    #

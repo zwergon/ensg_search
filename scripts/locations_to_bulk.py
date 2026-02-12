@@ -11,7 +11,7 @@ from datetime import datetime
 if __name__ == "__main__":
     directory = os.path.join(os.path.dirname(__file__), "..", "data")
     in_file = os.path.join(directory, "campStationLocations.geojson")
-    out_file = os.path.join(directory, "capm_locations.json")
+    out_file = os.path.join(directory, "camp_stations.json")
 
     # Charger le fichier GeoJSON
     with open(in_file, "r") as file:
@@ -26,14 +26,19 @@ if __name__ == "__main__":
 
             # Action metadata
             bulk_file.write(json.dumps(
-                {"index": {"_index": "geo_data"}}) + "\n")
+                {
+                    "create": {
+                        "_index": "camp_stations",
+                        "_id": str(properties.get("stno"))
+                    }
+                }) + "\n")
 
             dt = datetime.strptime(properties.get(
                 "open_date"), '%d/%m/%Y %H:%M')
 
             # Document data
             document = {
-                "stno": properties.get("stno"),
+                "stno": str(properties.get("stno")),
                 "location": properties.get("location"),
                 "county": properties.get("County"),
                 "catchment": properties.get("catchment"),
@@ -43,6 +48,7 @@ if __name__ == "__main__":
                 "coordinates": {
                     "lat": coordinates[1],
                     "lon": coordinates[0]
-                }
+                },
+                "station_to_observation": "station"
             }
             bulk_file.write(json.dumps(document) + "\n")
