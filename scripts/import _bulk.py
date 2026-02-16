@@ -14,6 +14,7 @@ if __name__ == "__main__":
                             "stno": {"type": "keyword"},
                             "location": {"type": "text"},
                             "county": {"type": "text"},
+                            "doc_type": {"type": "keyword"},
                             "catchment": {"type": "text"},
                             "river": {"type": "text"},
                             "elevation": {"type": "integer"},

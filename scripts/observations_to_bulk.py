@@ -115,7 +115,8 @@ def to_bulk(df: pd.DataFrame, out_file, index_name="camp_stations"):
                     "date": row['date'].strftime('%Y-%m-%d'),
                     "dry_mean": float(row['dry_mean']),
                     "grass_mean": float(row['grass_mean']),
-                    "hum_mean": float(row['hum_mean'])
+                    "hum_mean": float(row['hum_mean']),
+                    "doc_type": "observation"
                 }
             else:
                 document = {
@@ -123,7 +124,8 @@ def to_bulk(df: pd.DataFrame, out_file, index_name="camp_stations"):
                     "station_to_observation": {"name": "observation", "parent": str(row['StationName'])},
                     "date": row['date'].strftime('%Y-%m-%d'),
                     "pluvio_mean": float(row['pluvio_mean']),
-                    "temp_mean": float(row['temp_mean'])
+                    "temp_mean": float(row['temp_mean']),
+                    "doc_type": "observation"
                 }
             bulk_file.write(json.dumps(document) + "\n")
 

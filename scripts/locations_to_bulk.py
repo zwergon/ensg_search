@@ -49,6 +49,7 @@ if __name__ == "__main__":
                     "lat": coordinates[1],
                     "lon": coordinates[0]
                 },
-                "station_to_observation": "station"
+                "station_to_observation": "station",
+                "doc_type": "station"
             }
             bulk_file.write(json.dumps(document) + "\n")
