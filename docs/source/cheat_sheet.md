@@ -185,6 +185,6 @@ GET /pluvio/_search
 
 
 ---
-[[Copyright](../copyright.txt)] Lecomte Jean-François
+[[Copyright](../../copyright.txt)] Lecomte Jean-François
  
 

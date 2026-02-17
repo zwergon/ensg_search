@@ -1,4 +1,4 @@
-# Installing OpenSearch 
+# Session 1 : Installing OpenSearch 
 ![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)
 
 
@@ -17,7 +17,7 @@
 [Managed Service](https://bonsai.io/) for free. Some limitation but usefull
 
 
-# Install a python environment 
+## Install a python environment 
 
 Some module are required (see `requirements.txt`)
 
@@ -25,16 +25,7 @@ Some module are required (see `requirements.txt`)
 1. Use google collab or whatever you want. 
 
 
-
-# curl equivalent on Windows
-
-```
-src\os_get.ps1 -Uri "https://ensg-search-9642476797.eu-central-1.bonsaisearch.net:443/_cat/nodes?v" -Username "kpwoipavhb" -Password "9nys3us285"
-
-```
-
-
-# CRUD operation
+## CRUD operation
 
 insert a document from a json file with document id 
 ```
@@ -48,4 +39,4 @@ insert a document from a json file with document id
  ```
 
 ---
-[[Copyright](../copyright.txt)] Lecomte Jean-François
+[[Copyright](../../copyright.txt)] Lecomte Jean-François

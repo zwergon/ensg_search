@@ -1,8 +1,7 @@
-# Real data manipulation 
+# Session 3: Lab – Geospatial Analysis of Irish Climate Stations with OpenSearch 
 
 ![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)
 
-# Lab – Geospatial Analysis of Irish Climate Stations with OpenSearch
 
 ## Context
 
@@ -39,7 +38,7 @@ By the end of this lab, you should be able to:
 * Create interactive dashboards
 * Implement vector-based similarity search
 
-# Part 1 – Data Modeling & Index Creation
+## Part 1 – Data Modeling & Index Creation
 
 Create an index named: `camp_stations`
 
@@ -77,7 +76,7 @@ A join field named `station_to_observation`
 * Why is geo_point required for spatial analysis?
 * What is the purpose of routing in parent/child relationships?
 
-# Part 2 – Data Indexing - Bulk Import
+## Part 2 – Data Indexing - Bulk Import
 
 You must index:
 
@@ -96,7 +95,7 @@ Constraints
 * Count the number of observations
 * Test a has_child query
 
-# Part 3 – Attribute Queries & Aggregations
+## Part 3 – Attribute Queries & Aggregations
 
 * Find stations located above 200 meters elevation
 * Compute the average annual rainfall per station
@@ -107,7 +106,7 @@ Constraints
 * What is the difference between a terms aggregation and a histogram aggregation?
 * Why are aggregations efficient in OpenSearch?
 
-# Part 4 – Geospatial Queries
+## Part 4 – Geospatial Queries
 
 * Find stations within 100 km of Dublin
 * Retrieve stations inside a given bounding box
@@ -118,12 +117,12 @@ Constraints
 * How does OpenSearch internally index geographic coordinates?
 * What is the difference between a search engine spatial index and a classical GIS R-tree index?
 
-# Part 5 – Parent/Child Queries
+## Part 5 – Parent/Child Queries
 
 * Find stations that had at least one month with rainfall > 200 mm (Use has_child)
 * Retrieve all monthly observations for a given station (Use has_parent)
 
-## Discussion
+### Discussion
 
 Compare:
 
@@ -131,7 +130,7 @@ Compare:
 * OpenSearch document-based joins
 * Discuss advantages and limitations.
 
-# Part 6 - Dashboard Construction
+## Part 6 - Dashboard Construction
 
 Using OpenSearch Dashboards, build an analytical dashboard including:
 
@@ -141,27 +140,26 @@ Using OpenSearch Dashboards, build an analytical dashboard including:
 * A county filter
 * A month/year filter
 
-## Expected Outcome
+### Expected Outcome
 
 An interactive decision-support cartographic interface.
 
-# Part 7 – Climate Similarity (Advanced / Bonus)
+## Part 7 – Climate Similarity (Advanced / Bonus)
 
 Create a field:
 
 climate_signature = [annual_rain_mean, annual_temp_mean]
 
-
 Map it as a knn_vector.
 
-## Exercise
+### Exercise
 
 Find the 5 stations most similar to a selected station based on:
 * rainfall
 * temperature
 
 ---
-[[Copyright](../copyright.txt)] Lecomte Jean-François
+[[Copyright](../../copyright.txt)] Lecomte Jean-François
  
 
 

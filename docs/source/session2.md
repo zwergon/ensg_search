@@ -1,19 +1,19 @@
-# Manipulate Open Data : Renewable Power Plant
+# Session 2 : Manipulate Open Data : Renewable Power Plant
 
 ![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)
 
 First [download](https://data.open-power-system-data.org/renewable_power_plants/2020-08-25) csv data. 
 
-# Data discovery
+## Data discovery
 
-## in terms of power
+### in terms of power
 
 Use `pandas` to manipulate data ? Number of plants ? Look at the statistical description of the data ? 
 Take a closer look at `electrical_power` and at all the quartile ? 
 Draw an histogram to have an idea of the distribution of how the power plants power looks like ? 
 In particular for the plants that have an `electrical_power` less than a threshold defined by the 90 decile.  
 
-## in terms of localisation.
+### in terms of localisation.
 
 Implement a function that compute the [haversine](https://fr.wikipedia.org/wiki/Formule_de_haversine) distance between to plants.
 or use [scikit learn function](https://scikit-learn.org/1.6/modules/generated/sklearn.metrics.pairwise.haversine_distances.html) 
@@ -29,18 +29,19 @@ At the end, you have something like:
 ```
 Nearest plan to "Saint-Flour" is "Trézioux"
 ```
+(json_one)=
+### export json
 
-## export json
+1. Export several rows of the dataframe as dict in json format. 
 
-1. <a id='json_one'></a>Export several rows of the dataframe as dict in json format. 
+1. Export the $N$ first rows of the dataframe into a file using the bulk JSON format.
 
-1. Export the $N$ first rows of the dataframe in a file in bulk json format 
 
-# Crud Manipulation
+## Crud Manipulation
 
 1. Create an index called power_plant
 
-1. Index documents using [file](#json_one) 
+1. Index documents using {ref}`json_one` 
 
 1. Read the document to check the content of the document
 
@@ -52,7 +53,7 @@ Nearest plan to "Saint-Flour" is "Trézioux"
 
 1. Delete the index
 
-# Mapping definition
+## Mapping definition
 
 1. Create an index called power_plant
 
@@ -66,7 +67,7 @@ Nearest plan to "Saint-Flour" is "Trézioux"
 
 1. Create the right mapping for coordinates
 
-# Bulk operations
+## Bulk operations
 
 1. Create one power_plant index with the right mapping
 1. Index all power plants using the `json` you previously exported.
@@ -75,4 +76,4 @@ Nearest plan to "Saint-Flour" is "Trézioux"
 
 
 ---
-[[Copyright](../copyright.txt)] Lecomte Jean-François
+[[Copyright](../../copyright.txt)] Lecomte Jean-François
