@@ -9,7 +9,7 @@ if __name__ == "__main__":
     os_http.delete("camp_stations")
 
     os_http.mapping("camp_stations",
-                    {
+                    mapping = {
                         "properties": {
                             "stno": {"type": "keyword"},
                             "location": {"type": "text"},
@@ -24,9 +24,24 @@ if __name__ == "__main__":
                             "station_to_observation": {
                                 "type": "join",
                                 "relations": {"station": "observation"}
+                            },
+                            "weather_vector": {
+                                "type": "knn_vector",
+                                "dimension": 2,
+                                "method": {
+                                    "name": "hnsw",
+                                    "space_type": "l2",
+                                    "engine": "nmslib"
+                                }
                             }
                         }
-                    })
+                    },
+                    setting = { 
+                        "index": {
+                            "knn": "true"
+                            }
+                        }
+                    )
 
     os_http.bulk(root_path / "data" / "camp_stations.json")
 

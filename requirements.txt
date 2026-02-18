@@ -2,4 +2,4 @@ numpy
 pandas
 matplotlib
 dotenv
-openserach-py
+opensearch-py

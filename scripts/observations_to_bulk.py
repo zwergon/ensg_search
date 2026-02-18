@@ -125,7 +125,8 @@ def to_bulk(df: pd.DataFrame, out_file, index_name="camp_stations"):
                     "date": row['date'].strftime('%Y-%m-%d'),
                     "pluvio_mean": float(row['pluvio_mean']),
                     "temp_mean": float(row['temp_mean']),
-                    "doc_type": "observation"
+                    "doc_type": "observation",
+                    "weather_vector": [float(row['pluvio_mean']), float(row['temp_mean'])]
                 }
             bulk_file.write(json.dumps(document) + "\n")
 
@@ -192,7 +193,7 @@ if __name__ == "__main__":
     #
 
     df_all = read_nested_zips_to_df(
-        zip_path, columns=pluv_columns, n_inner_zips=5)
+        zip_path, columns=pluv_columns)
 
     df_daily = daily_station_means_pluv(df_all)
 

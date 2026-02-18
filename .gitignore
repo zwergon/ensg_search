@@ -5,3 +5,4 @@ src/ensg_search/__pycache__
 **/build 
 **/*.egg-info
 *.html
+scripts/.ipynb_checkpoints

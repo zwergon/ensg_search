@@ -51,8 +51,8 @@ def http_request(type: CmdType, cmd: str = "", body: dict = {}):
         print(f"Requête '{url}' réussie !")
 
     except requests.exceptions.RequestException as e:
-        print(f"Erreur lors de la requête '{cmd}': {e}")
-        exit(1)
+        raise Exception(f"Erreur lors de la requête '{cmd}': {e}")
+        
 
     return response.json()
 
@@ -77,9 +77,17 @@ def compter(index: str):
     return response.get("count", 0)
 
 
-def mapping(index: str, body: dict):
+def mapping(index: str, mapping: dict, setting: dict = None):
     cmd = f"{index}"
-    return http_request(CmdType.PUT, cmd=cmd, body={"mappings": body})
+
+    body = {
+        "mappings": mapping
+    }
+    if setting is not None:
+        body["settings"] = setting
+
+    print(json.dumps(body, indent=4))
+    return http_request(CmdType.PUT, cmd=cmd, body=body)
 
 
 def search_all(index: str, size: int = 10):
