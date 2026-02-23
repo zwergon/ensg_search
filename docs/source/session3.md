@@ -11,8 +11,7 @@
     * geographic coordinates (lat/lon)
     * elevation (m)
 
-* Monthly aggregated observations per station, including (*zip files*):
-
+* Daily observations per station, including (*zip files* ontain a 24 hour rolling archive of rain gauge data from climate stations across the country. ) :
     * precipitation (mm)
     * mean temperature (°C)
     
@@ -46,7 +45,7 @@ It must include the following fields:
 
 * Station fields (parent)
 
-    * stno (keyword)
+    * stno (_id)
     * name (keyword)
     * county (keyword)
     * elevation (float)
@@ -57,11 +56,11 @@ It must include the following fields:
 
 * Observation fields (child)
 
-    * time (date)
+    * date (date)
     * rain_mean (float)
     * temp_mean (float)
     * pluvio_mean (float)
-    *
+    * stno (keyword)
 
 Relationship field
 
@@ -81,7 +80,7 @@ A join field named `station_to_observation`
 You must index:
 
 * All stations (parent documents)
-* All monthly observations (child documents)
+* All daily observations (child documents)
 
 Constraints
 
@@ -89,17 +88,27 @@ Constraints
 * Child documents must use routing equal to stno
 * The child must reference its parent in the relation field
 
+
+I am providing you with two Python scripts, `location_to_bulk.py` and `observations_to_bulk.py`, which will create bulk files to index the stations on the one hand and the observations on the other.
+The bulk files are created to perform the parent-child join. When importing into OpenSearch, you will therefore need to remember to create the correct mapping based on the underlying structure.
+
+> The observations are grouped by hour. They relate to one day of observation. In my case, these were observations around February 6, 2025.
+
+The `import_bulk_camp.py` file allows you to index data in the OpenSearch database.
+
 ### Validation Tasks
 
 * Count the number of stations
 * Count the number of observations
+* Find the station that has no observations for the period.
 * Test a has_child query
+
 
 ## Part 3 – Attribute Queries & Aggregations
 
 * Find stations located above 200 meters elevation
-* Compute the average annual rainfall per station
-* Determine the wettest month nationwide (on average)
+* Compute the average rainfall per station for the day of observation ( from `2025-02-06T00:00:00` to `2025-02-07T00:00:00`)
+* Determine the wettest hour nationwide (on average)
 
 ### Conceptual Questions
 
@@ -108,9 +117,9 @@ Constraints
 
 ## Part 4 – Geospatial Queries
 
-* Find stations within 100 km of Dublin
-* Retrieve stations inside a given bounding box
-* Create a spatial aggregation using geotile_grid
+* Find stations within 100 km of Dublin (lat: 53.350140, lon: -6.266155), triées par distance géodésique décroissante.
+* Retrieve stations inside a given bounding box ( a square from { "lat": 53.83910015237743, "lon": -8.682583635622395 } to { "lat": 53.19322618753861, "lon": -7.56440581568431 })
+* Create a spatial aggregation using geotile_grid (zoom level 7)
 
 ### Conceptual Questions
 
@@ -119,8 +128,8 @@ Constraints
 
 ## Part 5 – Parent/Child Queries
 
-* Find stations that had at least one month with rainfall > 200 mm (Use has_child)
-* Retrieve all monthly observations for a given station (Use has_parent)
+* Find stations that had at least one hour of observation with rainfall > 700 mm (Use has_child). How many stations are there?
+* Retrieve all hourly observations for a given station (Use has_parent)
 
 ### Discussion
 
@@ -135,10 +144,12 @@ Compare:
 Using OpenSearch Dashboards, build an analytical dashboard including:
 
 * A map displaying stations
-* Symbol size proportional to average annual rainfall
-* A temperature histogram
+* 7 curves that show evolution of median temperature (temp_mean) over the whole day to the 7 stations with the lowest temperature. 
+* A temperature (temp_mean) histogram that display the median average température by 4h range over the whole day.
 * A county filter
-* A month/year filter
+
+### Discussion
+Explain what are the main limitations of the dashboards due to parent child relationships. What should be the way of denormalizing geo coordinates to be able to create geolocated visualizations ? 
 
 ### Expected Outcome
 
@@ -148,15 +159,14 @@ An interactive decision-support cartographic interface.
 
 Create a field:
 
-climate_signature = [annual_rain_mean, annual_temp_mean]
+weather_vector = [pluvio_mean, temp_mean]
 
 Map it as a knn_vector.
 
 ### Exercise
 
-Find the 5 stations most similar to a selected station based on:
-* rainfall
-* temperature
+Find the 5 stations most similar to a selected station based on weather_vector = [300, 4]. 
+From your point of view, how is the score calculated ?
 
 ---
 [[Copyright](../../copyright.txt)] Lecomte Jean-François

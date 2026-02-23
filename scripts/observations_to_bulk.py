@@ -112,7 +112,7 @@ def to_bulk(df: pd.DataFrame, out_file, index_name="camp_stations"):
                 document = {
                     "stno": str(row['StationName']),
                     "station_to_observation": {"name": "observation", "parent": str(row['StationName'])},
-                    "date": row['date'].strftime('%Y-%m-%d'),
+                    "date": row['date'].strftime('%Y-%m-%dT%H:%M:%S'),
                     "dry_mean": float(row['dry_mean']),
                     "grass_mean": float(row['grass_mean']),
                     "hum_mean": float(row['hum_mean']),
@@ -122,7 +122,7 @@ def to_bulk(df: pd.DataFrame, out_file, index_name="camp_stations"):
                 document = {
                     "stno": str(row['StationName']),
                     "station_to_observation": {"name": "observation", "parent": str(row['StationName'])},
-                    "date": row['date'].strftime('%Y-%m-%d'),
+                    "date": row['date'].strftime('%Y-%m-%dT%H:%M:%S'),
                     "pluvio_mean": float(row['pluvio_mean']),
                     "temp_mean": float(row['temp_mean']),
                     "doc_type": "observation",
@@ -145,6 +145,33 @@ def daily_station_means_pluv(df: pd.DataFrame) -> pd.DataFrame:
     df["date"] = df["TIMESTAMP"].dt.date
 
     # Agrégation journalière par station
+    grouped = (
+        df
+        .groupby(["StationName", "date"], as_index=False)
+        .agg(
+            pluvio_mean=("PluvioBucketRT", "mean"),
+            temp_mean=("PluvioLoadCellTemp", "mean")
+        )
+    )
+
+    return grouped
+
+
+def hourly_station_means_pluv(df: pd.DataFrame) -> pd.DataFrame:
+
+    df = df.copy()
+
+    # Nettoyage / typage
+    df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"], errors="coerce")
+    df["StationName"] = pd.to_numeric(df["StationName"], errors="coerce")
+
+    # On garde seulement les colonnes utiles
+    df = df[["StationName", "TIMESTAMP", "PluvioBucketRT", "PluvioLoadCellTemp"]]
+
+    # 🔹 Troncature à l'heure
+    df["date"] = df["TIMESTAMP"].dt.floor("h")
+
+    # Agrégation horaire par station
     grouped = (
         df
         .groupby(["StationName", "date"], as_index=False)
@@ -195,7 +222,7 @@ if __name__ == "__main__":
     df_all = read_nested_zips_to_df(
         zip_path, columns=pluv_columns)
 
-    df_daily = daily_station_means_pluv(df_all)
+    df_daily = hourly_station_means_pluv(df_all)
 
     out_file = data_path / "pluv_bulk.json"
     to_bulk(df_daily, out_file=str(out_file))

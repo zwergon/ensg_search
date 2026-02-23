@@ -9,7 +9,7 @@ if __name__ == "__main__":
     os_http.delete("camp_stations")
 
     os_http.mapping("camp_stations",
-                    mapping = {
+                    mapping={
                         "properties": {
                             "stno": {"type": "keyword"},
                             "location": {"type": "text"},
@@ -20,7 +20,7 @@ if __name__ == "__main__":
                             "elevation": {"type": "integer"},
                             "open_date": {"type": "date"},
                             "coordinates": {"type": "geo_point"},
-                            "time": {"type": "date"},
+                            "date": {"type": "date"},
                             "station_to_observation": {
                                 "type": "join",
                                 "relations": {"station": "observation"}
@@ -36,11 +36,11 @@ if __name__ == "__main__":
                             }
                         }
                     },
-                    setting = { 
+                    setting={
                         "index": {
                             "knn": "true"
-                            }
                         }
+                    }
                     )
 
     os_http.bulk(root_path / "data" / "camp_stations.json")
